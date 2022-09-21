@@ -1,4 +1,20 @@
 import ReactDOM from "react-dom/client";
-import Home from "@/pages/Home";
+import { FC } from "react";
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import router from '@/router'
 
-ReactDOM.hydrateRoot(document.getElementById("root") as Document | Element, <Home />)
+const Client: FC = () => {
+  return (
+    <BrowserRouter>
+      <Routes>
+        {
+          router.map((item) => {
+            return <Route {...item} key={item.path} />
+          })
+        }
+      </Routes>
+    </BrowserRouter>
+  )
+}
+
+ReactDOM.hydrateRoot(document.getElementById("root") as Document | Element, <Client />)
