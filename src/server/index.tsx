@@ -6,6 +6,8 @@ import { Route, Routes } from 'react-router-dom'
 import { StaticRouter } from 'react-router-dom/server'
 import router from '@/router'
 import { Helmet } from "react-helmet";
+import { serverStore } from '@/store'
+import { Provider } from 'react-redux'
 
 const app = express()
 // static resource path
@@ -13,15 +15,17 @@ app.use(express.static(path.resolve(process.cwd(), "client_build")));
 
 app.get('*', (req, res) => {
   const content = renderToString(
-    <StaticRouter location={req.path}>
-      <Routes>
-        {
-          router.map((item) => {
-            return <Route {...item} key={item.path} />
-          })
-        }
-      </Routes>
-    </StaticRouter>
+    <Provider store={serverStore}>
+      <StaticRouter location={req.path}>
+        <Routes>
+          {
+            router.map((item) => {
+              return <Route {...item} key={item.path} />
+            })
+          }
+        </Routes>
+      </StaticRouter>
+    </Provider>
   )
 
   const helmet = Helmet.renderStatic();
@@ -32,8 +36,10 @@ app.get('*', (req, res) => {
         ${helmet.title.toString()}
         ${helmet.meta.toString()}
       </head>
-      <body id="root">${content}</body>
-      <script src="/index.js"></script>
+      <body>
+        <div id="root">${content}</div>
+        <script src="/index.js"></script>
+      </body>
     </html>
   `)
 })

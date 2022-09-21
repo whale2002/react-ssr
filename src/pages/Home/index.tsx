@@ -1,9 +1,14 @@
 import { useNavigate } from 'react-router-dom'
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import { Helmet } from 'react-helmet'
 
 const Home = () => {
   const navigator = useNavigate()
+
+  // CSR 请求数据
+  useEffect(() => {
+    fetch('https://dog.ceo/api/breeds/image/random').then(res => res.json()).then(data => console.log('CSR请求数据', data))
+  }, [])
 
   return (
     <Fragment>
