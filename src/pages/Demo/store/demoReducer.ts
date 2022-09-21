@@ -1,6 +1,4 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import axios from 'axios'
-import { resolve } from 'path'
 
 const getDemoData = createAsyncThunk('demo/getData', async () => {
   const data = await new Promise((resolve, reject) => {
@@ -17,9 +15,12 @@ const getDemoData = createAsyncThunk('demo/getData', async () => {
 
 const demoReducer = createSlice({
   name: 'demo',
-  initialState: {
-    content: '默认数据'
-  },
+  initialState:
+    typeof window !== 'undefined'
+      ? (window as any)?.context?.state?.demo
+      : {
+          content: '默认数据'
+        },
   // 同步reducer
   reducers: {},
   // 异步reducer

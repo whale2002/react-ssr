@@ -3,7 +3,8 @@ import Demo from '@/pages/Demo'
 
 interface IProps {
   path: string
-  element: JSX.Element
+  element: JSX.Element,
+  loadData?: (store: any) => any;
 }
 
 const router: Array<IProps> = [
@@ -13,7 +14,8 @@ const router: Array<IProps> = [
   },
   {
     path: '/demo',
-    element: <Demo />
+    element: <Demo />,
+    loadData: Demo.getInitProps
   }
 ]
 

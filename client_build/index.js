@@ -47582,7 +47582,7 @@ const react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/.pn
 const demoReducer_1 = __webpack_require__(/*! ./store/demoReducer */ "./src/pages/Demo/store/demoReducer.ts");
 const react_helmet_1 = __webpack_require__(/*! react-helmet */ "./node_modules/.pnpm/react-helmet@6.1.0_react@18.2.0/node_modules/react-helmet/es/Helmet.js");
 const Demo = (props) => {
-    return ((0, jsx_runtime_1.jsxs)(react_1.Fragment, { children: [(0, jsx_runtime_1.jsxs)(react_helmet_1.Helmet, { children: [(0, jsx_runtime_1.jsx)("title", { children: "\u7B80\u6613\u7684\u670D\u52A1\u5668\u7AEF\u6E32\u67D3\u6846\u67B6 - DEMO" }), (0, jsx_runtime_1.jsx)("meta", { name: "description", content: "\u670D\u52A1\u5668\u7AEF\u6E32\u67D3\u6846\u67B6" })] }), (0, jsx_runtime_1.jsxs)("div", { children: [(0, jsx_runtime_1.jsx)("div", { children: "\u8FD9\u662F\u4E00\u4E2Ademo\u9875\u9762" }), (0, jsx_runtime_1.jsx)("h1", { children: props.content }), (0, jsx_runtime_1.jsx)("button", Object.assign({ onClick: () => {
+    return ((0, jsx_runtime_1.jsxs)(react_1.Fragment, { children: [(0, jsx_runtime_1.jsxs)(react_helmet_1.Helmet, { children: [(0, jsx_runtime_1.jsx)("title", { children: "\u7B80\u6613\u7684\u670D\u52A1\u5668\u7AEF\u6E32\u67D3\u6846\u67B6 - DEMO" }), (0, jsx_runtime_1.jsx)("meta", { name: "description", content: "\u670D\u52A1\u5668\u7AEF\u6E32\u67D3\u6846\u67B6" })] }), (0, jsx_runtime_1.jsxs)("div", { children: [(0, jsx_runtime_1.jsx)("h1", { children: props.content }), (0, jsx_runtime_1.jsx)("button", Object.assign({ onClick: () => {
                             props.getDemoData && props.getDemoData();
                         } }, { children: "\u5237\u65B0" }))] })] }));
 };
@@ -47599,7 +47599,11 @@ const mapDispatchToProps = (dispatch) => {
         },
     };
 };
-exports["default"] = (0, react_redux_1.connect)(mapStateToProps, mapDispatchToProps)(Demo);
+const storeDemo = (0, react_redux_1.connect)(mapStateToProps, mapDispatchToProps)(Demo);
+storeDemo.getInitProps = (store) => {
+    return store.dispatch((0, demoReducer_1.getDemoData)());
+};
+exports["default"] = storeDemo;
 
 
 /***/ }),
@@ -47621,6 +47625,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var _a, _b;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getDemoData = exports.demoReducer = void 0;
 const toolkit_1 = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/.pnpm/@reduxjs+toolkit@1.8.5_kkwg4cbsojnjnupd3btipussee/node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
@@ -47639,9 +47644,11 @@ const getDemoData = (0, toolkit_1.createAsyncThunk)('demo/getData', () => __awai
 exports.getDemoData = getDemoData;
 const demoReducer = (0, toolkit_1.createSlice)({
     name: 'demo',
-    initialState: {
-        content: '默认数据'
-    },
+    initialState: typeof window !== 'undefined'
+        ? (_b = (_a = window === null || window === void 0 ? void 0 : window.context) === null || _a === void 0 ? void 0 : _a.state) === null || _b === void 0 ? void 0 : _b.demo
+        : {
+            content: '默认数据'
+        },
     // 同步reducer
     reducers: {},
     // 异步reducer
@@ -47731,7 +47738,8 @@ const router = [
     },
     {
         path: '/demo',
-        element: (0, jsx_runtime_1.jsx)(Demo_1.default, {})
+        element: (0, jsx_runtime_1.jsx)(Demo_1.default, {}),
+        loadData: Demo_1.default.getInitProps
     }
 ];
 exports["default"] = router;

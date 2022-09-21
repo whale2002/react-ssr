@@ -16,7 +16,6 @@ const Demo: FC<IProps> = (props) => {
         <meta name="description" content="服务器端渲染框架"></meta>
       </Helmet>
       <div>
-        <div>这是一个demo页面</div>
         <h1>{props.content}</h1>
         <button
           onClick={(): void => {
@@ -43,4 +42,10 @@ const mapDispatchToProps = (dispatch: any) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Demo)
+const storeDemo: any = connect(mapStateToProps, mapDispatchToProps)(Demo)
+
+storeDemo.getInitProps = (store: any) => {
+  return store.dispatch(getDemoData());
+};
+
+export default storeDemo
