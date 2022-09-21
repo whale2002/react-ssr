@@ -1,9 +1,10 @@
-const express = require('express')
-const childProcess = require('child_process')
+import express from 'express'
+import childProcess from 'child_process'
 
 const app = express()
 
 app.get('*', (req, res) => {
+  const { url } = req
   res.send(`
     <html>
       <body>Hello-ssr</body>
